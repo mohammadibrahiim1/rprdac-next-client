@@ -5,6 +5,7 @@ import { Nav } from "@/components/layout/Nav";
 import Footer from "@/components/footer";
 import { ToasterProvider } from "@/components/ToasterProvider";
 import { Providers } from "@/redux/store/providers/StoreProvider";
+import AppInitializer from "@/components/AppInitializer";
 // import Nav from "@/components/layout/Nav";
 
 const geistSans = Geist({
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
@@ -34,10 +35,12 @@ export default function RootLayout({
       >
         {" "}
         <Providers>
-          <ToasterProvider />
-          <Nav></Nav>
-          <main>{children}</main>
-          <Footer></Footer>
+          <AppInitializer>
+            <ToasterProvider />
+            <Nav></Nav>
+            <main>{children}</main>
+            <Footer></Footer>
+          </AppInitializer>
         </Providers>
       </body>
     </html>

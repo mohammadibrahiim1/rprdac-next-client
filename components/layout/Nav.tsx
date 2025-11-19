@@ -15,6 +15,11 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "@/redux/features/auth/authSlice";
+import { useLogoutMutation } from "@/redux/services/authApi";
+import { RootState } from "@/redux/store/store";
+import { useRouter } from "next/navigation";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -56,6 +61,19 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function Nav() {
   const isMobile = useIsMobile();
+  const user = useSelector((state: RootState) => state?.auth?.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [logout] = useLogoutMutation();
+
+  console.log(user);
+
+  const handleLogout = async () => {
+    await logout();
+    dispatch(clearUser());
+    router.push("/login");
+  };
 
   return (
     <NavigationMenu viewport={isMobile}>
@@ -126,7 +144,57 @@ export function Nav() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:block">
+        {/* Conditional User / Login Menu */}
+        {user ? (
+          <NavigationMenuItem className="hidden md:block">
+            <NavigationMenuTrigger>
+              {user.name || "MD Ebrahim Munna"}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[200px] gap-4">
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/dashboard"
+                      className="flex-row items-center gap-2"
+                    >
+                      <CircleHelpIcon />
+                      Dashboard
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/profile"
+                      className="flex-row items-center gap-2"
+                    >
+                      <CircleIcon />
+                      My profile
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <button
+                      onClick={handleLogout}
+                      className="flex-row items-center gap-2 w-full text-left cursor-pointer"
+                    >
+                      <CircleCheckIcon />
+                      Log out
+                    </button>
+                  </NavigationMenuLink>
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        ) : (
+          <NavigationMenuItem className="hidden md:block">
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+            >
+              <Link href="/login">Login</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        )}
+        {/* <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger>MD Ebrahim Munna</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
@@ -152,7 +220,7 @@ export function Nav() {
               </li>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );
