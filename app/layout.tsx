@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/layout/Nav";
 import Footer from "@/components/footer";
-import StoreProvider from "@/redux/store/providers/StoreProvider";
+import { ToasterProvider } from "@/components/ToasterProvider";
+import { Providers } from "@/redux/store/providers/StoreProvider";
 // import Nav from "@/components/layout/Nav";
 
 const geistSans = Geist({
@@ -32,11 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {" "}
-        <StoreProvider>
+        <Providers>
+          <ToasterProvider />
           <Nav></Nav>
           <main>{children}</main>
           <Footer></Footer>
-        </StoreProvider>
+        </Providers>
       </body>
     </html>
   );
