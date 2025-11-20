@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Nav } from "@/components/layout/Nav";
-import Footer from "@/components/footer";
 import { ToasterProvider } from "@/components/ToasterProvider";
 import { Providers } from "@/redux/store/providers/StoreProvider";
 import AppInitializer from "@/components/AppInitializer";
@@ -37,9 +35,9 @@ export default function RootLayout({
         <Providers>
           <AppInitializer>
             <ToasterProvider />
-            <Nav></Nav>
+            {/* <Nav></Nav> */}
             <main>{children}</main>
-            <Footer></Footer>
+            {/* <Footer></Footer> */}
           </AppInitializer>
         </Providers>
       </body>

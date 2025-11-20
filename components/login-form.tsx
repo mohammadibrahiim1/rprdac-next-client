@@ -43,10 +43,13 @@ export function LoginForm({
       if (res.success && res.user) {
         dispatch(setUser(res.user));
         toast.success("Login successful!");
-        router.push("/dashboard");
+        router.replace(
+          res?.user?.role === "admin" ? "/dashboard/admin" : "/dashboard/user"
+        );
       }
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Login failed!");
+    } catch (error: unknown) {
+      const err = error as { data?: { message?: string } };
+      toast.error(err?.data?.message || "Login failed!");
     }
   };
 

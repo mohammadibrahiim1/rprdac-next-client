@@ -10,13 +10,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
-interface Props {
+interface DashboardLayoutProps {
   children: ReactNode;
 }
 
 import data from "./data.json";
 
-export default function DashboardLayout({ children }: Props) {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { isAuthenticated, user } = useAuth();
   const router = useRouter();
 

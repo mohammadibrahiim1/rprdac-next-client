@@ -2,13 +2,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   console.log(user);
 
@@ -21,15 +22,24 @@ export default function Dashboard() {
       return;
     }
 
+    // IMPORTANT FIX:
+    // If user is already inside /dashboard/admin or /dashboard/user → NO REDIRECT
+    if (
+      pathname.includes("/dashboard/admin") ||
+      pathname.includes("/dashboard/user")
+    ) {
+      return;
+    }
+
     // Redirect based on role
-    if (user.role === "admin") {
+    if (user?.role === "admin") {
       router.replace("/dashboard/admin");
     } else {
       router.replace("/dashboard/user");
     }
 
     setLoading(false);
-  }, [user, isAuthenticated, router]);
+  }, [user, isAuthenticated, router, pathname]);
 
   if (loading) return null;
 
