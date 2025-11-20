@@ -6,7 +6,7 @@ import { Heart, Target, Award, Users, BookOpen, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function AboutPage() {
+export default function About() {
   const [hoveredValue, setHoveredValue] = useState<number | null>(null);
 
   const values = [
