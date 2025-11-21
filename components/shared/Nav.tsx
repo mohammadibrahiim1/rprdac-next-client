@@ -273,29 +273,255 @@
 //   );
 // }
 
+//updated nav ui
+// "use client";
+
+// import * as React from "react";
+// import Link from "next/link";
+// import Image from "next/image";
+// import {
+//   Bell,
+//   CircleCheckIcon,
+//   CircleHelpIcon,
+//   CircleIcon,
+// } from "lucide-react";
+
+// import { useIsMobile } from "@/hooks/use-mobile";
+
+// import {
+//   NavigationMenu,
+//   NavigationMenuContent,
+//   NavigationMenuItem,
+//   NavigationMenuLink,
+//   NavigationMenuList,
+//   NavigationMenuTrigger,
+//   navigationMenuTriggerStyle,
+// } from "@/components/ui/navigation-menu";
+
+// import { useDispatch, useSelector } from "react-redux";
+// import { clearUser } from "@/redux/features/auth/authSlice";
+// import { RootState } from "@/redux/store/store";
+// import { useLogoutMutation } from "@/redux/services/authApi";
+// import { useRouter } from "next/navigation";
+
+// const components = [
+//   {
+//     title: "Buy Books",
+//     href: "/books",
+//     description: "Buy school & college books online.",
+//   },
+//   {
+//     title: "Track Order",
+//     href: "/trackorder",
+//     description: "Track your order in real time.",
+//   },
+// ];
+
+// export function Nav() {
+//   const isMobile = useIsMobile();
+//   const user = useSelector((state: RootState) => state?.auth?.user);
+//   const dispatch = useDispatch();
+//   const router = useRouter();
+//   const [logout] = useLogoutMutation();
+
+//   const handleLogout = async () => {
+//     await logout();
+//     dispatch(clearUser());
+//     router.push("/login");
+//   };
+
+//   return (
+//     <header className="w-full bg-white shadow-sm sticky top-0 z-50 flex justify-center">
+//       <div className="flex items-center justify-between gap-10">
+//         {/* LEFT — LOGO */}
+//         <Link href="/" className="flex items-center">
+//           <Image
+//             src="/log-rpr.png" /* <-- change your logo path here */
+//             alt="rpr logo"
+//             width={80}
+//             height={80}
+//             className="object-contain bg-no-repeat bg-center"
+//           />
+//           {/* <span className="text-xl font-semibold hidden md:block">PRDRAC</span> */}
+//         </Link>
+
+//         {/* RIGHT — NAVIGATION */}
+//         <NavigationMenu viewport={isMobile}>
+//           <NavigationMenuList className="flex-wrap">
+//             <NavigationMenuItem>
+//               <NavigationMenuLink
+//                 asChild
+//                 className={navigationMenuTriggerStyle()}
+//               >
+//                 <Link href="/checkstatus">Check Status</Link>
+//               </NavigationMenuLink>
+//             </NavigationMenuItem>
+
+//             <NavigationMenuItem>
+//               <NavigationMenuTrigger>Order Books</NavigationMenuTrigger>
+//               <NavigationMenuContent>
+//                 <ul className="grid gap-2 sm:w-[380px] md:w-[450px] grid-cols-2 lg:w-[300px]">
+//                   {components?.map((item) => (
+//                     <ListItem
+//                       key={item.title}
+//                       title={item.title}
+//                       href={item.href}
+//                     ></ListItem>
+//                   ))}
+//                 </ul>
+//               </NavigationMenuContent>
+//             </NavigationMenuItem>
+
+//             <NavigationMenuItem className="hidden md:block">
+//               <NavigationMenuTrigger>Academics</NavigationMenuTrigger>
+//               <NavigationMenuContent>
+//                 <ul className="w-[260px] grid-cols-2 grid items-center">
+//                   <li>
+//                     <NavigationMenuLink asChild>
+//                       <Link href="/result" className="font-medium">
+//                         Result Corner
+//                       </Link>
+//                     </NavigationMenuLink>
+//                   </li>
+//                   <li>
+//                     <NavigationMenuLink asChild>
+//                       <Link href="/solution" className="font-medium">
+//                         Solution Corner
+//                       </Link>
+//                     </NavigationMenuLink>
+//                   </li>
+//                 </ul>
+//               </NavigationMenuContent>
+//             </NavigationMenuItem>
+
+//             <NavigationMenuItem>
+//               <NavigationMenuLink
+//                 asChild
+//                 className={navigationMenuTriggerStyle()}
+//               >
+//                 <Link href="/about">About us</Link>
+//               </NavigationMenuLink>
+//             </NavigationMenuItem>
+
+//             <NavigationMenuItem>
+//               <NavigationMenuLink
+//                 asChild
+//                 className={navigationMenuTriggerStyle()}
+//               >
+//                 <Link href="/notification">
+//                   <Bell />
+//                 </Link>
+//               </NavigationMenuLink>
+//             </NavigationMenuItem>
+
+//             <NavigationMenuItem className="hidden md:block">
+//               <NavigationMenuTrigger>Cart</NavigationMenuTrigger>
+//               <NavigationMenuContent>
+//                 <ul className="grid w-[200px]">
+//                   <li>
+//                     <NavigationMenuLink asChild>
+//                       <Link href="/cart">Cart items</Link>
+//                     </NavigationMenuLink>
+//                   </li>
+//                 </ul>
+//               </NavigationMenuContent>
+//             </NavigationMenuItem>
+
+//             {/* USER MENU */}
+//             {user ? (
+//               <NavigationMenuItem className="hidden md:block">
+//                 <NavigationMenuTrigger>
+//                   {user?.name || "User"}
+//                 </NavigationMenuTrigger>
+//                 <NavigationMenuContent>
+//                   <ul className="w-[200px]">
+//                     <li className="">
+//                       <NavigationMenuLink asChild>
+//                         <Link href="/dashboard">
+//                           <div className="flex items-center gap-2">
+//                             <CircleHelpIcon /> <span>Dashboard</span>
+//                           </div>
+//                         </Link>
+//                       </NavigationMenuLink>
+
+//                       <NavigationMenuLink asChild>
+//                         <Link href="/profile">
+//                           <div className="flex items-center gap-2">
+//                             <CircleIcon /> <span>My Profile</span>
+//                           </div>
+//                         </Link>
+//                       </NavigationMenuLink>
+
+//                       <NavigationMenuLink asChild>
+//                         <div onClick={handleLogout}>
+//                           <div className="flex items-center gap-2 cursor-pointer">
+//                             <CircleCheckIcon /> <span>Log out</span>
+//                           </div>
+//                         </div>
+//                       </NavigationMenuLink>
+//                     </li>
+//                   </ul>
+//                 </NavigationMenuContent>
+//               </NavigationMenuItem>
+//             ) : (
+//               <NavigationMenuItem className="hidden md:block">
+//                 <NavigationMenuLink
+//                   asChild
+//                   className={navigationMenuTriggerStyle()}
+//                 >
+//                   <Link href="/login">Login</Link>
+//                 </NavigationMenuLink>
+//               </NavigationMenuItem>
+//             )}
+//           </NavigationMenuList>
+//         </NavigationMenu>
+//       </div>
+//     </header>
+//   );
+// }
+
+// function ListItem({
+//   title,
+//   children,
+//   href,
+//   ...props
+// }: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+//   return (
+//     <li {...props}>
+//       <NavigationMenuLink asChild>
+//         <Link
+//           href={href}
+//           className="block  rounded-md p-2 transition hover:bg-accent"
+//         >
+//           <div className="text-sm font-medium">{title}</div>
+//           <p className="text-sm text-muted-foreground line-clamp-2">
+//             {children}
+//           </p>
+//         </Link>
+//       </NavigationMenuLink>
+//     </li>
+//   );
+// }
+
 "use client";
 
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
+  Menu,
+  LogOut,
+  User,
   Bell,
-  CircleCheckIcon,
-  CircleHelpIcon,
-  CircleIcon,
+  BookOpen,
+  ShoppingCart,
+  SearchCheck,
+  MapPin,
+  ClipboardCheck,
+  Notebook,
+  Info,
+  LayoutDashboard,
 } from "lucide-react";
-
-import { useIsMobile } from "@/hooks/use-mobile";
-
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@/redux/features/auth/authSlice";
@@ -303,24 +529,41 @@ import { RootState } from "@/redux/store/store";
 import { useLogoutMutation } from "@/redux/services/authApi";
 import { useRouter } from "next/navigation";
 
-const components = [
-  {
-    title: "Buy Books",
-    href: "/books",
-    description: "Buy school & college books online.",
-  },
-  {
-    title: "Track Order",
-    href: "/trackorder",
-    description: "Track your order in real time.",
-  },
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuLink,
+  // NavigationMenuContent,
+  // NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+
+import { Button } from "@/components/ui/button";
+
+export const navLinks = [
+  { title: "Check Status", href: "/checkstatus", icon: SearchCheck },
+  { title: "Buy Books", href: "/books", icon: BookOpen },
+  { title: "Track Order", href: "/trackorder", icon: MapPin },
+  { title: "Result Corner", href: "/result", icon: ClipboardCheck },
+  { title: "Solution Corner", href: "/solution", icon: Notebook },
+  { title: "About Us", href: "/about", icon: Info },
+  { title: "Notifications", href: "/notification", icon: Bell },
+  { title: "Cart", href: "/cart", icon: ShoppingCart },
 ];
 
-export function Nav() {
-  const isMobile = useIsMobile();
-  const user = useSelector((state: RootState) => state?.auth?.user);
-  const dispatch = useDispatch();
+export default function Nav() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const [logout] = useLogoutMutation();
 
   const handleLogout = async () => {
@@ -330,174 +573,143 @@ export function Nav() {
   };
 
   return (
-    <header className="w-full bg-white shadow-sm sticky top-0 z-50 flex justify-center">
-      <div className="flex items-center justify-between gap-10">
+    <header className="w-full bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         {/* LEFT — LOGO */}
         <Link href="/" className="flex items-center">
           <Image
-            src="/log-rpr.png" /* <-- change your logo path here */
+            src="/log-rpr.png"
             alt="rpr logo"
-            width={80}
-            height={80}
-            className="object-contain bg-no-repeat bg-center"
+            width={60}
+            height={60}
+            className="object-contain"
           />
-          {/* <span className="text-xl font-semibold hidden md:block">PRDRAC</span> */}
         </Link>
 
-        {/* RIGHT — NAVIGATION */}
-        <NavigationMenu viewport={isMobile}>
-          <NavigationMenuList className="flex-wrap">
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
-                <Link href="/checkstatus">Check Status</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Order Books</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid gap-2 sm:w-[380px] md:w-[450px] grid-cols-2 lg:w-[300px]">
-                  {components?.map((item) => (
-                    <ListItem
-                      key={item.title}
-                      title={item.title}
-                      href={item.href}
-                    ></ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem className="hidden md:block">
-              <NavigationMenuTrigger>Academics</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="w-[260px] grid-cols-2 grid items-center">
-                  <li>
-                    <NavigationMenuLink asChild>
-                      <Link href="/result" className="font-medium">
-                        Result Corner
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex items-center gap-6">
+          <NavigationMenu>
+            <NavigationMenuList>
+              {navLinks?.map((item) => {
+                const Icon = item?.icon; // icon only for notification & cart
+                const showIcon =
+                  item?.title === "Notifications" || item?.title === "Cart";
+                return (
+                  <NavigationMenuItem key={item.title}>
+                    <NavigationMenuLink
+                      className="px-3 py-1.5 text-sm hover:text-blue-600"
+                      asChild
+                    >
+                      <Link href={item?.href}>
+                        {/* Only show icon for Notifications & Cart */}
+                        {showIcon ? (
+                          <Icon className="w-5 h-5" />
+                        ) : (
+                          <span>{item?.title}</span>
+                        )}
                       </Link>
                     </NavigationMenuLink>
-                  </li>
-                  <li>
-                    <NavigationMenuLink asChild>
-                      <Link href="/solution" className="font-medium">
-                        Solution Corner
+                  </NavigationMenuItem>
+                );
+              })}
+
+              {/* USER MENU DESKTOP */}
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="font-medium">
+                    {user?.name}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center gap-2"
+                      >
+                        <LayoutDashboard size={18} /> My Dashboard
                       </Link>
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
-                <Link href="/about">About us</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
-                <Link href="/notification">
-                  <Bell />
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem className="hidden md:block">
-              <NavigationMenuTrigger>Cart</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[200px]">
-                  <li>
-                    <NavigationMenuLink asChild>
-                      <Link href="/cart">Cart items</Link>
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            {/* USER MENU */}
-            {user ? (
-              <NavigationMenuItem className="hidden md:block">
-                <NavigationMenuTrigger>
-                  {user?.name || "User"}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="w-[200px]">
-                    <li className="">
-                      <NavigationMenuLink asChild>
-                        <Link href="/dashboard">
-                          <div className="flex items-center gap-2">
-                            <CircleHelpIcon /> <span>Dashboard</span>
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-
-                      <NavigationMenuLink asChild>
-                        <Link href="/profile">
-                          <div className="flex items-center gap-2">
-                            <CircleIcon /> <span>My Profile</span>
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-
-                      <NavigationMenuLink asChild>
-                        <div onClick={handleLogout}>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <CircleCheckIcon /> <span>Log out</span>
-                          </div>
-                        </div>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            ) : (
-              <NavigationMenuItem className="hidden md:block">
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="flex items-center gap-2">
+                        <User size={18} /> My Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="text-red-600 flex items-center gap-2 cursor-pointer"
+                    >
+                      <LogOut size={18} /> Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button asChild>
                   <Link href="/login">Login</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            )}
-          </NavigationMenuList>
-        </NavigationMenu>
+                </Button>
+              )}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+
+        {/* MOBILE RIGHT SIDE */}
+        <div className="flex md:hidden items-center gap-3">
+          {/* USER / LOGIN */}
+          {user ? (
+            <span className="font-medium">{user.name}</span>
+          ) : (
+            <Link
+              href="/login"
+              className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm"
+            >
+              Login
+            </Link>
+          )}
+
+          {/* MOBILE DROPDOWN MENU */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="p-2 border rounded-md">
+              <Menu size={20} />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-56">
+              {navLinks.map((item) => (
+                <DropdownMenuItem key={item.title} asChild>
+                  <Link href={item.href} className="flex items-center gap-2">
+                    {item.title}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+
+              {user && (
+                <>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="flex items-center gap-2">
+                      <User size={18} /> Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="flex items-center gap-2">
+                      <User size={18} /> My Profile
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-red-600 flex items-center gap-2 cursor-pointer"
+                  >
+                    <LogOut size={18} /> Logout
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
-  );
-}
-
-function ListItem({
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link
-          href={href}
-          className="block  rounded-md p-2 transition hover:bg-accent"
-        >
-          <div className="text-sm font-medium">{title}</div>
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
   );
 }

@@ -1,5 +1,5 @@
 import Footer from "@/components/footer";
-import { Nav } from "@/components/shared/Nav";
+import Nav from "@/components/shared/Nav";
 import { ReactNode } from "react";
 
 interface MainLayoutProps {
