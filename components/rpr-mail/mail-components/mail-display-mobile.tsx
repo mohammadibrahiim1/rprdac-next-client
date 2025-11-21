@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
 import { addDays, addHours, format, nextSaturday } from "date-fns";
 import {
   Archive,
@@ -11,7 +11,7 @@ import {
   ReplyAll,
   Trash2,
 } from "lucide-react";
-import { useMailStore } from "../use-mail";
+// import { useMailStore } from "../use-mail";
 
 import {
   DropdownMenuContent,
@@ -42,27 +42,28 @@ import { Mail } from "../data";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useState } from "react";
 
 interface MailDisplayProps {
   mail: Mail | null;
 }
 
 export function MailDisplayMobile({ mail }: MailDisplayProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const today = new Date();
-  const { selectedMail, setSelectedMail } = useMailStore();
+  // const { selectedMail, setSelectedMail } = useMailStore();
 
-  useEffect(() => {
-    if (selectedMail) {
-      setOpen(true);
-    }
-  }, [selectedMail]);
+  // useEffect(() => {
+  //   if (selectedMail) {
+  //     setOpen(true);
+  //   }
+  // }, [selectedMail]);
 
-  useEffect(() => {
-    if (!open) {
-      setSelectedMail(null);
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (!open) {
+  //     setSelectedMail(null);
+  //   }
+  // }, [open]);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>

@@ -30,13 +30,14 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Mail } from "../data";
+import { Textarea } from "@/components/ui/textarea";
 
 interface MailDisplayProps {
   mail: Mail | null;
@@ -218,7 +219,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           <div className="p-4">
             <form>
               <div className="grid gap-4">
-                <Textarea
+                <Textarea 
                   className="p-4"
                   placeholder={`Reply ${mail.name}...`}
                 />

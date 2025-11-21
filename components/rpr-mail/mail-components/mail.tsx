@@ -6,49 +6,65 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 import { Input } from "@/components/ui/input";
-// import {
-//   ResizableHandle,
-//   ResizablePanel,
-//   ResizablePanelGroup,
-// } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { MailDisplay } from "./mail-display";
-import { MailList } from "./mail-list";
-import { type Mail } from "../data";
 import { NavDesktop } from "./nav-desktop";
 import { NavMobile } from "./nav-mobile";
 import { MailDisplayMobile } from "./mail-display-mobile";
+
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { useMailStore } from "../use-rpr-mail";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, appDispatch } from "@/redux/store/store";
+import { setSelectedMail } from "@/redux/features/mail/mailSlice";
+
+import { type Mail } from "../data";
+import { useGetMailsQuery } from "@/redux/services/mailsApi";
+import { MailList } from "./mail-list";
 
 interface MailProps {
-  accounts: {
+  accounts?: {
     label: string;
     email: string;
     icon: React.ReactNode;
   }[];
-  mails: Mail[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
 }
 
 export function Mail({
-  mails,
   defaultLayout = [20, 32, 48],
   defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const isMobile = useIsMobile();
-  const { selectedMail } = useMailStore();
+  const dispatch: appDispatch = useDispatch();
+
   const [tab, setTab] = React.useState("all");
+
+  // Redux selected mail
+  const selectedMail = useSelector(
+    (state: RootState) => state.mail.selectedMail
+  );
+
+  // RTK Query fetch mails
+  const { data: mails = [] } = useGetMailsQuery();
+
+  // select mail handler
+  const handleSelectMail = (mail: Mail) => {
+    dispatch(setSelectedMail(mail));
+  };
+
+  const filteredMails =
+    tab === "all" ? mails : mails.filter((item) => item.read === false); // unread
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -61,24 +77,21 @@ export function Mail({
         }}
         className="items-stretch"
       >
+        {/* LEFT NAVIGATION PANEL */}
         <ResizablePanel
           hidden={isMobile}
           defaultSize={defaultLayout[0]}
           collapsedSize={navCollapsedSize}
-          collapsible={true}
+          collapsible
           minSize={15}
           maxSize={20}
           onCollapse={() => {
             setIsCollapsed(true);
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              true
-            )}`;
+            document.cookie = `react-resizable-panels:collapsed=true`;
           }}
           onResize={() => {
             setIsCollapsed(false);
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              false
-            )}`;
+            document.cookie = `react-resizable-panels:collapsed=false`;
           }}
           className={cn(
             isCollapsed &&
@@ -87,7 +100,10 @@ export function Mail({
         >
           <NavDesktop isCollapsed={isCollapsed} />
         </ResizablePanel>
+
         <ResizableHandle hidden={isMobile} withHandle />
+
+        {/* MIDDLE MAIL LIST PANEL */}
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
           <Tabs
             defaultValue="all"
@@ -104,7 +120,9 @@ export function Mail({
                 <TabsTrigger value="unread">Unread</TabsTrigger>
               </TabsList>
             </div>
+
             <Separator />
+
             <div className="bg-background/95 supports-backdrop-filter:bg-background/60 p-4 backdrop-blur">
               <form>
                 <div className="relative">
@@ -113,31 +131,29 @@ export function Mail({
                 </div>
               </form>
             </div>
+
             <div className="min-h-0">
               <MailList
-                items={
-                  tab === "all"
-                    ? mails
-                    : mails.filter((item) => item.read === (tab === "read"))
-                }
+                items={filteredMails}
+                onSelectMail={handleSelectMail}
+                selectedMail={null}
               />
             </div>
           </Tabs>
         </ResizablePanel>
+
         <ResizableHandle hidden={isMobile} withHandle />
+
+        {/* RIGHT MAIL DISPLAY PANEL */}
         <ResizablePanel
           defaultSize={defaultLayout[2]}
           hidden={isMobile}
           minSize={30}
         >
           {isMobile ? (
-            <MailDisplayMobile
-              mail={mails.find((item) => item.id === selectedMail?.id) || null}
-            />
+            <MailDisplayMobile mail={selectedMail} />
           ) : (
-            <MailDisplay
-              mail={mails.find((item) => item.id === selectedMail?.id) || null}
-            />
+            <MailDisplay mail={selectedMail} />
           )}
         </ResizablePanel>
       </ResizablePanelGroup>
