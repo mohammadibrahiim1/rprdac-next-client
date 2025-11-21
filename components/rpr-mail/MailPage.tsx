@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { accounts } from "./data";
+import { accounts, mails } from "./data";
 import { Mail } from "./mail-components/mail";
 
 export default async function MailPage() {
@@ -10,8 +10,9 @@ export default async function MailPage() {
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
 
   return (
-    <div className="my-5 rounded-md border">
+    <div className="h-screen my-5 rounded-md border">
       <Mail
+        mails={mails}
         accounts={accounts}
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}

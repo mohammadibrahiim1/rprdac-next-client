@@ -100,10 +100,11 @@ interface MailListProps {
 }
 
 export function MailList({ items, selectedMail, onSelectMail }: MailListProps) {
+  console.log(items);
   return (
     <ScrollArea className="h-full">
       <div className="flex flex-col gap-2 p-4 pt-0">
-        {items.map((item) => (
+        {items?.map((item) => (
           <button
             key={item.id}
             className={cn(

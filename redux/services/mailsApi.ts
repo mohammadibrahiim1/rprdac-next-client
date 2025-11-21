@@ -8,7 +8,7 @@ export const mailsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getMails: builder.query<Mail[], void>({
       // <ResponseType, RequestArg>
-      query: () => "/mails", // fetch endpoint
+      query: () => "../../components/rpr-mail/data.tsx", // fetch endpoint
       providesTags: (result) =>
         result
           ? [

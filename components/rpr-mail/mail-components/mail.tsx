@@ -23,10 +23,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, appDispatch } from "@/redux/store/store";
 import { setSelectedMail } from "@/redux/features/mail/mailSlice";
-
-import { type Mail } from "../data";
-import { useGetMailsQuery } from "@/redux/services/mailsApi";
 import { MailList } from "./mail-list";
+import { type Mail } from "../data";
+// import { useGetMailsQuery } from "@/redux/services/mailsApi";
 
 interface MailProps {
   accounts?: {
@@ -34,12 +33,14 @@ interface MailProps {
     email: string;
     icon: React.ReactNode;
   }[];
+  mails: Mail[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
 }
 
 export function Mail({
+  mails,
   defaultLayout = [20, 32, 48],
   defaultCollapsed = false,
   navCollapsedSize,
@@ -47,8 +48,9 @@ export function Mail({
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const isMobile = useIsMobile();
   const dispatch: appDispatch = useDispatch();
-
   const [tab, setTab] = React.useState("all");
+
+  console.log(mails);
 
   // Redux selected mail
   const selectedMail = useSelector(
@@ -56,15 +58,12 @@ export function Mail({
   );
 
   // RTK Query fetch mails
-  const { data: mails = [] } = useGetMailsQuery();
+  // const { data: mails = [] } = useGetMailsQuery();
 
   // select mail handler
   const handleSelectMail = (mail: Mail) => {
     dispatch(setSelectedMail(mail));
   };
-
-  const filteredMails =
-    tab === "all" ? mails : mails.filter((item) => item.read === false); // unread
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -113,7 +112,7 @@ export function Mail({
             <div className="flex items-center px-4 py-2">
               <div className="flex items-center gap-2">
                 {isMobile && <NavMobile />}
-                <h1 className="text-xl font-bold">Inbox</h1>
+                <h1 className="text-xl font-bold">Notifications</h1>
               </div>
               <TabsList className="ml-auto">
                 <TabsTrigger value="all">All</TabsTrigger>
@@ -134,7 +133,11 @@ export function Mail({
 
             <div className="min-h-0">
               <MailList
-                items={filteredMails}
+                items={
+                  tab === "all"
+                    ? mails
+                    : mails.filter((item) => item.read === (tab === "read"))
+                }
                 onSelectMail={handleSelectMail}
                 selectedMail={null}
               />
@@ -151,10 +154,19 @@ export function Mail({
           minSize={30}
         >
           {isMobile ? (
+            <MailDisplayMobile
+              mail={mails?.find((item) => item.id === selectedMail?.id) || null}
+            />
+          ) : (
+            <MailDisplay
+              mail={mails?.find((item) => item.id === selectedMail?.id) || null}
+            />
+          )}
+          {/* {isMobile ? (
             <MailDisplayMobile mail={selectedMail} />
           ) : (
             <MailDisplay mail={selectedMail} />
-          )}
+          )} */}
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
